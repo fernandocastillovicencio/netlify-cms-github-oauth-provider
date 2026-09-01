@@ -15,6 +15,13 @@ app.get('/callback', middleWarez.callback)
 app.get('/success', middleWarez.success)
 app.get('/', middleWarez.index)
 
-app.listen(port, () => {
-  console.log("Netlify CMS OAuth provider listening on port " + port)
-})
+// Listen only when run directly (traditional server: node app.js).
+// On Vercel (serverless) the app is imported by api/index.js instead —
+// calling app.listen() inside a serverless function crashes it.
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log("Netlify CMS OAuth provider listening on port " + port)
+  })
+}
+
+module.exports = app
